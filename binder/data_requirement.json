@@ -1,0 +1,4 @@
+{ "src": "https://github.com/OpenNeuroDatasets/ds004906.git",
+  "dst": "data",
+  "projectName": "ds004906",
+  "recursive": true}

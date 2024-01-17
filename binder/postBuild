@@ -1,0 +1,8 @@
+#!/bin/bash
+
+git clone https://github.com/shimming-toolbox/rf-shimming-7t.git
+
+#conda activate shimming
+
+cd content
+#repo2data -r ../binder/data_requirement.json
