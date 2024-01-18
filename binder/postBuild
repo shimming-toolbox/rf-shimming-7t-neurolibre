@@ -4,5 +4,7 @@ git clone https://github.com/shimming-toolbox/rf-shimming-7t.git
 
 #conda activate shimming
 
+datalad-installer datalad git-annex
+
 cd content
 #repo2data -r ../binder/data_requirement.json

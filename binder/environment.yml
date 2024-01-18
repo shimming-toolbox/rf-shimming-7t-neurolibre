@@ -5,7 +5,6 @@ channels:
   - conda-forge
 
 dependencies:
- - git-annex
  - matplotlib
  - nibabel
  - numpy
