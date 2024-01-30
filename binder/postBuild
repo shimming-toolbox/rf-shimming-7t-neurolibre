@@ -10,4 +10,13 @@ cd ~/content/sct
 yes | ./install_sct
 echo 'export PATH=/home/mathieuboudreau/content/sct/bin:$PATH' >> ~/.bashrc
 echo 'export MPLBACKEND='Agg'' >> ~/.bashrc
+
+echo 'export PATH=/home/mathieuboudreau/content/sct/bin:$PATH' >> ~/.bash_profile
+echo 'export MPLBACKEND='Agg'' >> ~/.bash_profile
+
+echo 'export PATH=/home/mathieuboudreau/content/sct/bin:$PATH' >> ~/.bash_login
+echo 'export MPLBACKEND='Agg'' >> ~/.bash_login
+
+echo 'export PATH=/home/mathieuboudreau/content/sct/bin:$PATH' >> ~/.profile
+echo 'export MPLBACKEND='Agg'' >> ~/.profile
 cd ~/
