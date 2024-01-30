@@ -1,4 +1,5 @@
-{ "src": "https://github.com/OpenNeuroDatasets/ds004906.git",
-  "dst": "data",
-  "projectName": "ds004906",
-  "recursive": true}
+{ 
+    "src": "https://drive.google.com/file/d/1rc4Df_ACL1ePYj8_BwFKjugzcyyiyLA-/view?usp=drive_link",
+    "dst": "../data",
+    "projectName": "rf-shimming-7t"
+}

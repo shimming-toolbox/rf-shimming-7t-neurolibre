@@ -5,6 +5,7 @@ channels:
   - conda-forge
 
 dependencies:
+ - pip
  - matplotlib
  - nibabel
  - numpy
@@ -22,3 +23,4 @@ dependencies:
    - repo2data
    - datalad-installer
    - pybids
+   - yes
