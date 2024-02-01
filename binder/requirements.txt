@@ -1,3 +1,7 @@
+jupyter-book==0.13.0
+plotly
+seaborn
+markdown
 datalad
 matplotlib
 nibabel
