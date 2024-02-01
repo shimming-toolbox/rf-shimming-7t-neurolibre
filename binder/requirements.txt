@@ -1,0 +1,9 @@
+datalad
+matplotlib
+nibabel
+notebook
+numpy
+pandas
+scipy
+statsmodels
+repo2data
