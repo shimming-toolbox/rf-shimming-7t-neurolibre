@@ -1,0 +1,418 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RF Shimming 7T</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint single-page" id="site-navigation">
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/shimming-toolbox/rf-shimming-7t-neurolibre/main?urlpath=lab/tree/content/index.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>1     |     Data</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <div class="cell tag_remove_output tag_remove_input docutils container">
+</div>
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+<p>
+<center>
+<b>
+<h3>
+Analysis code for the paper "RF shimming in the cervical spinal cord at 7T"
+</h3>
+</b>
+</center>
+<div class="tex2jax_ignore mathjax_ignore section" id="data">
+<h1>1     |     Data<a class="headerlink" href="#data" title="Permalink to this headline">#</a></h1>
+<p>The data can be downloaded from: <a class="reference external" href="https://openneuro.org/datasets/ds004906">https://openneuro.org/datasets/ds004906</a></p>
+<p>The structure of the input dataset is as follows (JSON sidecars are not listed for clarity):</p>
+<div class="toggle docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>ds004906
+├── CHANGES
+├── README
+├── dataset_description.json
+├── participants.json
+├── participants.tsv
+├── sub-01
+│   ├── anat
+│   │   ├── sub-01_acq-CP_T1w.nii.gz
+│   │   ├── sub-01_acq-CP_T2starw.nii.gz
+│   │   ├── sub-01_acq-CoV_T1w.nii.gz
+│   │   ├── sub-01_acq-CoV_T2starw.nii.gz
+│   │   ├── sub-01_acq-SAReff_T2starw.nii.gz
+│   │   ├── sub-01_acq-patient_T2starw.nii.gz
+│   │   ├── sub-01_acq-phase_T2starw.nii.gz
+│   │   ├── sub-01_acq-target_T2starw.nii.gz
+│   │   ├── sub-01_acq-volume_T2starw.nii.gz
+│   └── fmap
+│       ├── sub-01_acq-anatCP_TB1TFL.nii.gz
+│       ├── sub-01_acq-anatCoV_TB1TFL.nii.gz
+│       ├── sub-01_acq-anatSAReff_TB1TFL.nii.gz
+│       ├── sub-01_acq-anatpatient_TB1TFL.nii.gz
+│       ├── sub-01_acq-anatphase_TB1TFL.nii.gz
+│       ├── sub-01_acq-anattarget_TB1TFL.nii.gz
+│       ├── sub-01_acq-anatvolume_TB1TFL.nii.gz
+│       ├── sub-01_acq-fampCP_TB1TFL.nii.gz
+│       ├── sub-01_acq-fampCoV_TB1TFL.nii.gz
+│       ├── sub-01_acq-fampSAReff_TB1TFL.nii.gz
+│       ├── sub-01_acq-famppatient_TB1TFL.nii.gz
+│       ├── sub-01_acq-fampphase_TB1TFL.nii.gz
+│       ├── sub-01_acq-famptarget_TB1TFL.nii.gz
+│       └── sub-01_acq-fampvolume_TB1TFL.nii.gz
+├── sub-02
+├── sub-03
+├── sub-04
+└── sub-05
+</pre></div>
+</div>
+</div>
+<p>Test citation: <span id="id1">[<a class="reference internal" href="#id3" title="Alexandre D'Astous, Gaspard Cereza, Daniel Papp, Kyle M. Gilbert, Jason P. Stockmann, Eva Alonso-Ortiz, and Julien Cohen-Adad. Shimming toolbox: an open-source software toolbox for b0 and b1 shimming in mri. Magnetic Resonance in Medicine, 89(4):1401-1417, 2023. URL: https://onlinelibrary.wiley.com/doi/abs/10.1002/mrm.29528, arXiv:https://onlinelibrary.wiley.com/doi/pdf/10.1002/mrm.29528, doi:https://doi.org/10.1002/mrm.29528.">D'Astous <em>et al.</em>, 2023</a>]</span>.</p>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="overview-of-processing-pipeline">
+<h1>2     |     Overview of processing pipeline<a class="headerlink" href="#overview-of-processing-pipeline" title="Permalink to this headline">#</a></h1>
+<p>For each subject:</p>
+<ul class="simple">
+<li><p>Process anat/T2starw (GRE)</p>
+<ul>
+<li><p>Segment the spinal cord (SC)</p></li>
+<li><p>Label vertebral levels using existing manual disc labels</p></li>
+<li><p>Create a mask of the cerebrospinal fluid (CSF)</p></li>
+<li><p>Extract the SC/CSF magnitude signal to assess the stability of the flip angle across shim methods</p></li>
+</ul>
+</li>
+<li><p>Process fmap/TFL (flip angle maps)</p>
+<ul>
+<li><p>Register each B1 map (CP, CoV, etc.) to the GRE scan</p></li>
+<li><p>Apply the computed warping field to bring the segmentation and vertebral levels to the B1 map</p></li>
+<li><p>Convert the B1 map to nT/V units</p></li>
+<li><p>Extract the B1 map value within the SC</p></li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<div><p>Slow processes are indicated with the emoji ⏳</p>
+</div></blockquote>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="requirements">
+<h1>3     |     Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">#</a></h1>
+<ul class="simple">
+<li><p>Install <a class="reference external" href="https://spinalcordtoolbox.com/user_section/installation.html">Spinal Cord Toolbox</a>, eg</p></li>
+</ul>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install Python libaries</span>
+!wget<span class="w"> </span>-O<span class="w"> </span>requirements.txt<span class="w"> </span>https://raw.githubusercontent.com/shimming-toolbox/rf-shimming-7t/main/requirements.txt
+!pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+
+<span class="c1"># Install SCT ⏳</span>
+!git<span class="w"> </span>clone<span class="w"> </span>--depth<span class="w"> </span><span class="m">1</span><span class="w"> </span>https://github.com/spinalcordtoolbox/spinalcordtoolbox.git
+!yes<span class="w"> </span><span class="p">|</span><span class="w"> </span>spinalcordtoolbox/install_sct
+os.environ<span class="o">[</span><span class="s1">&#39;PATH&#39;</span><span class="o">]</span><span class="w"> </span>+<span class="o">=</span><span class="w"> </span>f<span class="s2">&quot;:/content/spinalcordtoolbox/bin&quot;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Download the project repository</p></li>
+</ul>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/shimming-toolbox/rf-shimming-7t-neurolibre.git
+<span class="nb">cd</span><span class="w"> </span>rf-shimming-7t-neurolibre
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Install requirements</p></li>
+</ul>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>binder/requirements.txt
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Download data</p></li>
+</ul>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>content
+repo2data<span class="w"> </span>-r<span class="w"> </span>../binder/data_requirement.json
+</pre></div>
+</div>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="environment-setup">
+<h1>3     |     Environment setup<a class="headerlink" href="#environment-setup" title="Permalink to this headline">#</a></h1>
+<p>In a Python shell:</p>
+<p>Import the necessary modules.</p>
+<div class="cell tag_remove_output tag_hide_input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">nibabel</span> <span class="k">as</span> <span class="nn">nib</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>
+<span class="kn">from</span> <span class="nn">scipy.ndimage</span> <span class="kn">import</span> <span class="n">uniform_filter1d</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">f_oneway</span><span class="p">,</span> <span class="n">ttest_rel</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">from</span> <span class="nn">statsmodels.stats.multicomp</span> <span class="kn">import</span> <span class="n">pairwise_tukeyhsd</span>
+<span class="kn">from</span> <span class="nn">statsmodels.stats.anova</span> <span class="kn">import</span> <span class="n">AnovaRM</span>
+<span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sm</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Define variables.</p>
+<div class="cell tag_hide_input tag_remove_output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="s2">&quot;../data/rf-shimming-7t/ds004906&quot;</span><span class="p">)</span>
+
+<span class="n">path_data</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;path_data: </span><span class="si">{</span><span class="n">path_data</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">path_labels</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_data</span><span class="p">,</span> <span class="s2">&quot;derivatives&quot;</span><span class="p">,</span> <span class="s2">&quot;labels&quot;</span><span class="p">)</span>
+<span class="n">path_qc</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_data</span><span class="p">,</span> <span class="s2">&quot;qc&quot;</span><span class="p">)</span>
+<span class="n">shim_modes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;CP&quot;</span><span class="p">,</span> <span class="s2">&quot;patient&quot;</span><span class="p">,</span> <span class="s2">&quot;volume&quot;</span><span class="p">,</span> <span class="s2">&quot;phase&quot;</span><span class="p">,</span> <span class="s2">&quot;CoV&quot;</span><span class="p">,</span> <span class="s2">&quot;target&quot;</span><span class="p">,</span> <span class="s2">&quot;SAReff&quot;</span><span class="p">]</span>
+<span class="n">shim_modes_MPRAGE</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;CP&quot;</span><span class="p">,</span> <span class="s2">&quot;CoV&quot;</span><span class="p">]</span> 
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;shim_modes: </span><span class="si">{</span><span class="n">shim_modes</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">subjects</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;sub-*&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;subjects: </span><span class="si">{</span><span class="n">subjects</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Create output folder</span>
+<span class="n">path_results</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_data</span><span class="p">,</span> <span class="s1">&#39;derivatives&#39;</span><span class="p">,</span> <span class="s1">&#39;results&#39;</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">path_results</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="references">
+<h1>References<a class="headerlink" href="#references" title="Permalink to this headline">#</a></h1>
+<div class="docutils container" id="id2">
+<dl class="citation">
+<dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Alexandre D'Astous, Gaspard Cereza, Daniel Papp, Kyle M. Gilbert, Jason P. Stockmann, Eva Alonso-Ortiz, and Julien Cohen-Adad. Shimming toolbox: an open-source software toolbox for b0 and b1 shimming in mri. <em>Magnetic Resonance in Medicine</em>, 89(4):1401–1417, 2023. URL: <a class="reference external" href="https://onlinelibrary.wiley.com/doi/abs/10.1002/mrm.29528">https://onlinelibrary.wiley.com/doi/abs/10.1002/mrm.29528</a>, <a class="reference external" href="https://arxiv.org/abs/https://onlinelibrary.wiley.com/doi/pdf/10.1002/mrm.29528">arXiv:https://onlinelibrary.wiley.com/doi/pdf/10.1002/mrm.29528</a>, <a class="reference external" href="https://doi.org/https://doi.org/10.1002/mrm.29528">doi:https://doi.org/10.1002/mrm.29528</a>.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By The Jupyter Book community<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>
