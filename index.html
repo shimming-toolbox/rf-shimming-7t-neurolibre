@@ -188,11 +188,26 @@ title="Fullscreen mode"
 <p>
 <center>
 <b>
-<h3>
+<h1>
 Analysis code for the paper "RF shimming in the cervical spinal cord at 7T"
-</h3>
+</h1>
+</b>
+<p>
+Daniel Papp<sup>1</sup>, Kyle M. Gilbert<sup>2,3</sup>, Gaspard Cereza<sup>1</sup>, Alexandre D’Astous<sup>1</sup>, Mathieu Boudreau<sup>1</sup>, Marcus Couch<sup>4</sup>, Pedram Yazdanbakhsh<sup>5</sup>, Robert L. Barry<sup>6</sup>, Eva Alonso Ortiz<sup>1</sup>, Julien Cohen-Adad<sup>1,7,8</sup>
+</p>
 </b>
 </center>
+<p style="text-align:justify;font-size:70%">
+<sup>1</sup>NeuroPoly Lab, Institute of Biomedical Engineering, Polytechnique Montreal, Montreal, QC, Canada,
+<sup>2</sup> Centre for Functional and Metabolic Mapping, The University of Western Ontario, London, ON, Canada,
+<sup>3</sup> Department of Medical Biophysics, The University of Western Ontario, London, ON, Canada,
+<sup>4</sup> Siemens Healthcare Limited, Montreal, QC, Canada,
+<sup>5</sup> McConnell Brain Imaging Centre, Montreal Neurological Institute, McGill University, Montreal, QC, Canada,
+<sup>6</sup> Athinoula A. Martinos Center for Biomedical Imaging, Department of Radiology, Massachusetts General Hospital, Charlestown, MA, USA,
+<sup>7</sup> Mila - Quebec AI Institute, Montreal, QC, Canada,
+<sup>8</sup> Functional Neuroimaging Unit, Centre de recherche de l'Institut universitaire de gériatrie de Montréal QC, Canada
+</p>
+</p>
 <div class="tex2jax_ignore mathjax_ignore section" id="data">
 <h1>1     |     Data<a class="headerlink" href="#data" title="Permalink to this headline">#</a></h1>
 <p>The data can be downloaded from: <a class="reference external" href="https://openneuro.org/datasets/ds004906">https://openneuro.org/datasets/ds004906</a></p>
@@ -237,10 +252,11 @@ Analysis code for the paper "RF shimming in the cervical spinal cord at 7T"
 </pre></div>
 </div>
 </div>
-<p>Test citation: <span id="id1">[<a class="reference internal" href="#id3" title="Alexandre D'Astous, Gaspard Cereza, Daniel Papp, Kyle M. Gilbert, Jason P. Stockmann, Eva Alonso-Ortiz, and Julien Cohen-Adad. Shimming toolbox: an open-source software toolbox for b0 and b1 shimming in mri. Magnetic Resonance in Medicine, 89(4):1401-1417, 2023. URL: https://onlinelibrary.wiley.com/doi/abs/10.1002/mrm.29528, arXiv:https://onlinelibrary.wiley.com/doi/pdf/10.1002/mrm.29528, doi:https://doi.org/10.1002/mrm.29528.">D'Astous <em>et al.</em>, 2023</a>]</span>.</p>
 </div>
 <div class="tex2jax_ignore mathjax_ignore section" id="overview-of-processing-pipeline">
 <h1>2     |     Overview of processing pipeline<a class="headerlink" href="#overview-of-processing-pipeline" title="Permalink to this headline">#</a></h1>
+<p>During the data acquisition stage, RF shimming was done using the <a class="reference external" href="https://github.com/shimming-toolbox/shimming-toolbox">Shimming Toolbox</a> <span id="id1">[<a class="reference internal" href="#id5" title="Alexandre D'Astous, Gaspard Cereza, Daniel Papp, Kyle M. Gilbert, Jason P. Stockmann, Eva Alonso-Ortiz, and Julien Cohen-Adad. Shimming toolbox: an open-source software toolbox for b0 and b1 shimming in mri. Magnetic Resonance in Medicine, 89(4):1401-1417, 2023. URL: https://onlinelibrary.wiley.com/doi/abs/10.1002/mrm.29528, arXiv:https://onlinelibrary.wiley.com/doi/pdf/10.1002/mrm.29528, doi:https://doi.org/10.1002/mrm.29528.">D'Astous <em>et al.</em>, 2023</a>]</span> during the acquisition stage.</p>
+<p>The post-processing pipeline uses the <a class="reference external" href="https://spinalcordtoolbox.com">Spinal Cord Toolbox</a> <span id="id2">[<a class="reference internal" href="#id6" title="Benjamin De Leener, Simon Lévy, Sara M. Dupont, Vladimir S. Fonov, Nikola Stikov, D. Louis Collins, Virginie Callot, and Julien Cohen-Adad. Sct: spinal cord toolbox, an open-source software for processing spinal cord \MRI\ data. NeuroImage, 145, Part A():24 - 43, 2017. URL: http://www.sciencedirect.com/science/article/pii/S1053811916305560, doi:https://doi.org/10.1016/j.neuroimage.2016.10.009.">De Leener <em>et al.</em>, 2017</a>]</span>.</p>
 <p>For each subject:</p>
 <ul class="simple">
 <li><p>Process anat/T2starw (GRE)</p>
@@ -267,7 +283,7 @@ Analysis code for the paper "RF shimming in the cervical spinal cord at 7T"
 <div class="tex2jax_ignore mathjax_ignore section" id="requirements">
 <h1>3     |     Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">#</a></h1>
 <ul class="simple">
-<li><p>Install <a class="reference external" href="https://spinalcordtoolbox.com/user_section/installation.html">Spinal Cord Toolbox</a>, eg</p></li>
+<li><p>Install <a class="reference external" href="https://spinalcordtoolbox.com/user_section/installation.html">Spinal Cord Toolbox</a> <span id="id3">[<a class="reference internal" href="#id6" title="Benjamin De Leener, Simon Lévy, Sara M. Dupont, Vladimir S. Fonov, Nikola Stikov, D. Louis Collins, Virginie Callot, and Julien Cohen-Adad. Sct: spinal cord toolbox, an open-source software for processing spinal cord \MRI\ data. NeuroImage, 145, Part A():24 - 43, 2017. URL: http://www.sciencedirect.com/science/article/pii/S1053811916305560, doi:https://doi.org/10.1016/j.neuroimage.2016.10.009.">De Leener <em>et al.</em>, 2017</a>]</span>, eg</p></li>
 </ul>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install Python libaries</span>
 !wget<span class="w"> </span>-O<span class="w"> </span>requirements.txt<span class="w"> </span>https://raw.githubusercontent.com/shimming-toolbox/rf-shimming-7t/main/requirements.txt
@@ -1099,24 +1115,24 @@ Paired t-tests:
 <span class="c1"># cbar = plt.colorbar(im, cax=cbar_ax)</span>
 <span class="n">cbar_ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;nT/V&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_results</span><span class="p">,</span> <span class="s1">&#39;fig_b1plus_map.png&#39;</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;png&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;function matplotlib.pyplot.show(close=None, block=None)&gt;
-</pre></div>
-</div>
-<img alt="_images/index_44_1.png" src="_images/index_44_1.png" />
+<img alt="_images/index_44_0.png" src="_images/index_44_0.png" />
 </div>
 </div>
 </div>
 <div class="tex2jax_ignore mathjax_ignore section" id="references">
 <h1>References<a class="headerlink" href="#references" title="Permalink to this headline">#</a></h1>
-<div class="docutils container" id="id2">
+<div class="docutils container" id="id4">
 <dl class="citation">
-<dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dt class="label" id="id5"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
 <dd><p>Alexandre D'Astous, Gaspard Cereza, Daniel Papp, Kyle M. Gilbert, Jason P. Stockmann, Eva Alonso-Ortiz, and Julien Cohen-Adad. Shimming toolbox: an open-source software toolbox for b0 and b1 shimming in mri. <em>Magnetic Resonance in Medicine</em>, 89(4):1401–1417, 2023. URL: <a class="reference external" href="https://onlinelibrary.wiley.com/doi/abs/10.1002/mrm.29528">https://onlinelibrary.wiley.com/doi/abs/10.1002/mrm.29528</a>, <a class="reference external" href="https://arxiv.org/abs/https://onlinelibrary.wiley.com/doi/pdf/10.1002/mrm.29528">arXiv:https://onlinelibrary.wiley.com/doi/pdf/10.1002/mrm.29528</a>, <a class="reference external" href="https://doi.org/https://doi.org/10.1002/mrm.29528">doi:https://doi.org/10.1002/mrm.29528</a>.</p>
+</dd>
+<dt class="label" id="id6"><span class="brackets">2</span><span class="fn-backref">(<a href="#id2">1</a>,<a href="#id3">2</a>)</span></dt>
+<dd><p>Benjamin De Leener, Simon Lévy, Sara M. Dupont, Vladimir S. Fonov, Nikola Stikov, D. Louis Collins, Virginie Callot, and Julien Cohen-Adad. Sct: spinal cord toolbox, an open-source software for processing spinal cord \MRI\ data. <em>NeuroImage</em>, 145, Part A():24 – 43, 2017. URL: <a class="reference external" href="http://www.sciencedirect.com/science/article/pii/S1053811916305560">http://www.sciencedirect.com/science/article/pii/S1053811916305560</a>, <a class="reference external" href="https://doi.org/https://doi.org/10.1016/j.neuroimage.2016.10.009">doi:https://doi.org/10.1016/j.neuroimage.2016.10.009</a>.</p>
 </dd>
 </dl>
 </div>
