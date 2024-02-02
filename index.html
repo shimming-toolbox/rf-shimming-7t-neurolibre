@@ -208,6 +208,16 @@ Daniel Papp<sup>1</sup>, Kyle M. Gilbert<sup>2,3</sup>, Gaspard Cereza<sup>1</su
 <sup>8</sup> Functional Neuroimaging Unit, Centre de recherche de l'Institut universitaire de gériatrie de Montréal QC, Canada
 </p>
 </p>
+</p>
+<center><h2>Summary</h2></center>
+<p>Data was collected from five participants between two 7T sites with a custom 8Tx/20Rx parallel transmission (pTx) coil. We explored two RF shimming approaches from an MRI vendor and four from an open-source toolbox, showcasing their ability to enhance transmit field and signal homogeneity along the cervical spinal cord.</p>
+<p>The results indicate significant improvements in B1+ efficiency and cerebrospinal fluid / spinal cord signal ratio across various RF shimming conditions compared to the vendor based methods.</p>
+<p>The study’s findings highlight the potential of RF shimming to advance 7T MRI’s clinical utility for central nervous system imaging by enabling more homogenous and efficient spinal cord imaging. Additionally, the research incorporates a reproducible Jupyter Notebook, enhancing the study’s transparency and facilitating peer verification. By also making the data openly accessible on OpenNeuro, we ensure that the scientific community can further explore, validate, and build upon our findings, contributing to the collective advancement in high-resolution imaging techniques.</p>
+<div class="figure align-center" id="fig1">
+<a class="reference internal image-reference" href="_images/featured.png"><img alt="_images/featured.png" src="_images/featured.png" style="width: 900px;" /></a>
+</div>
+<center><h2>Statement of Need</h2></center>
+<p>Advancing the development of 7T MRI for spinal cord imaging is crucial for the enhanced diagnosis and monitoring of various neurodegenerative diseases <span id="id1">[<a class="reference internal" href="#id10" title="Hugh Kearney, David H Miller, and Olga Ciccarelli. Spinal cord MRI in multiple sclerosis–diagnostic, prognostic and clinical value. Nat. Rev. Neurol., 11(6):327–338, June 2015.">Kearney <em>et al.</em>, 2015</a>]</span> and traumas <span id="id2">[<a class="reference internal" href="#id11" title="Gergely David, Siawoosh Mohammadi, Allan R Martin, Julien Cohen-Adad, Nikolaus Weiskopf, Alan Thompson, and Patrick Freund. Traumatic and nontraumatic spinal cord injury: pathological insights from neuroimaging. Nat. Rev. Neurol., 15(12):718–731, December 2019.">David <em>et al.</em>, 2019</a>]</span>. However, a significant challenge at this field strength is the transmit field inhomogeneity . Such inhomogeneity is particularly problematic for imaging the small, deep anatomical structures of<span id="id3">[<a class="reference internal" href="#id13" title="Christopher M Collins, Wanzhan Liu, Weston Schreiber, Qing X Yang, and Michael B Smith. Central brightening due to constructive interference with, without, and despite dielectric resonance. J. Magn. Reson. Imaging, 21(2):192–196, February 2005.">Collins <em>et al.</em>, 2005</a>, <a class="reference internal" href="#id12" title="Tamer S Ibrahim, Robert Lee, Amir M Abduljalil, Brian A Baertlein, and Pierre-Marie L Robitaille. Dielectric resonances and B1 field inhomogeneity in UHF MRI: computational analysis and experimental findings. 2001. Accessed: 2020-8-10.">Ibrahim <em>et al.</em>, 2001</a>, <a class="reference internal" href="#id14" title="P Röschmann. Radiofrequency penetration and absorption in the human body: limitations to high-field whole-body nuclear magnetic resonance imaging. Med. Phys., 14(6):922–931, November 1987.">Röschmann, 1987</a>, <a class="reference internal" href="#id15" title="Qing X Yang, Jinghua Wang, Xiaoliang Zhang, Christopher M Collins, Michael B Smith, Haiying Liu, Xiao-Hong Zhu, J Thomas Vaughan, Kamil Ugurbil, and Wei Chen. Analysis of wave behavior in lossy dielectric samples at high field. Magn. Reson. Med., 47(5):982–989, May 2002.">Yang <em>et al.</em>, 2002</a>]</span> the cervical spinal cord, as it can cause uneven signal intensity and elevate the local specific absorption ratio, compromising image quality. This multi-site study explores several radiofrequency (RF) shimming techniques in the cervical spinal cord at 7T.</p>
 <div class="tex2jax_ignore mathjax_ignore section" id="data">
 <h1>1     |     Data<a class="headerlink" href="#data" title="Permalink to this headline">#</a></h1>
 <p>The data can be downloaded from: <a class="reference external" href="https://openneuro.org/datasets/ds004906">https://openneuro.org/datasets/ds004906</a></p>
@@ -255,8 +265,8 @@ Daniel Papp<sup>1</sup>, Kyle M. Gilbert<sup>2,3</sup>, Gaspard Cereza<sup>1</su
 </div>
 <div class="tex2jax_ignore mathjax_ignore section" id="overview-of-processing-pipeline">
 <h1>2     |     Overview of processing pipeline<a class="headerlink" href="#overview-of-processing-pipeline" title="Permalink to this headline">#</a></h1>
-<p>During the data acquisition stage, RF shimming was done using the <a class="reference external" href="https://github.com/shimming-toolbox/shimming-toolbox">Shimming Toolbox</a> <span id="id1">[<a class="reference internal" href="#id5" title="Alexandre D'Astous, Gaspard Cereza, Daniel Papp, Kyle M. Gilbert, Jason P. Stockmann, Eva Alonso-Ortiz, and Julien Cohen-Adad. Shimming toolbox: an open-source software toolbox for b0 and b1 shimming in mri. Magnetic Resonance in Medicine, 89(4):1401-1417, 2023. URL: https://onlinelibrary.wiley.com/doi/abs/10.1002/mrm.29528, arXiv:https://onlinelibrary.wiley.com/doi/pdf/10.1002/mrm.29528, doi:https://doi.org/10.1002/mrm.29528.">D'Astous <em>et al.</em>, 2023</a>]</span> during the acquisition stage.</p>
-<p>The post-processing pipeline uses the <a class="reference external" href="https://spinalcordtoolbox.com">Spinal Cord Toolbox</a> <span id="id2">[<a class="reference internal" href="#id6" title="Benjamin De Leener, Simon Lévy, Sara M. Dupont, Vladimir S. Fonov, Nikola Stikov, D. Louis Collins, Virginie Callot, and Julien Cohen-Adad. Sct: spinal cord toolbox, an open-source software for processing spinal cord \MRI\ data. NeuroImage, 145, Part A():24 - 43, 2017. URL: http://www.sciencedirect.com/science/article/pii/S1053811916305560, doi:https://doi.org/10.1016/j.neuroimage.2016.10.009.">De Leener <em>et al.</em>, 2017</a>]</span>.</p>
+<p>During the data acquisition stage, RF shimming was done using the <a class="reference external" href="https://github.com/shimming-toolbox/shimming-toolbox">Shimming Toolbox</a> <span id="id4">[<a class="reference internal" href="#id8" title="Alexandre D'Astous, Gaspard Cereza, Daniel Papp, Kyle M. Gilbert, Jason P. Stockmann, Eva Alonso-Ortiz, and Julien Cohen-Adad. Shimming toolbox: an open-source software toolbox for b0 and b1 shimming in mri. Magnetic Resonance in Medicine, 89(4):1401-1417, 2023. URL: https://onlinelibrary.wiley.com/doi/abs/10.1002/mrm.29528, arXiv:https://onlinelibrary.wiley.com/doi/pdf/10.1002/mrm.29528, doi:https://doi.org/10.1002/mrm.29528.">D'Astous <em>et al.</em>, 2023</a>]</span> during the acquisition stage.</p>
+<p>The post-processing pipeline uses the <a class="reference external" href="https://spinalcordtoolbox.com">Spinal Cord Toolbox</a> <span id="id5">[<a class="reference internal" href="#id9" title="Benjamin De Leener, Simon Lévy, Sara M. Dupont, Vladimir S. Fonov, Nikola Stikov, D. Louis Collins, Virginie Callot, and Julien Cohen-Adad. Sct: spinal cord toolbox, an open-source software for processing spinal cord \MRI\ data. NeuroImage, 145, Part A():24 - 43, 2017. URL: http://www.sciencedirect.com/science/article/pii/S1053811916305560, doi:https://doi.org/10.1016/j.neuroimage.2016.10.009.">De Leener <em>et al.</em>, 2017</a>]</span>.</p>
 <p>For each subject:</p>
 <ul class="simple">
 <li><p>Process anat/T2starw (GRE)</p>
@@ -283,7 +293,7 @@ Daniel Papp<sup>1</sup>, Kyle M. Gilbert<sup>2,3</sup>, Gaspard Cereza<sup>1</su
 <div class="tex2jax_ignore mathjax_ignore section" id="requirements">
 <h1>3     |     Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">#</a></h1>
 <ul class="simple">
-<li><p>Install <a class="reference external" href="https://spinalcordtoolbox.com/user_section/installation.html">Spinal Cord Toolbox</a> <span id="id3">[<a class="reference internal" href="#id6" title="Benjamin De Leener, Simon Lévy, Sara M. Dupont, Vladimir S. Fonov, Nikola Stikov, D. Louis Collins, Virginie Callot, and Julien Cohen-Adad. Sct: spinal cord toolbox, an open-source software for processing spinal cord \MRI\ data. NeuroImage, 145, Part A():24 - 43, 2017. URL: http://www.sciencedirect.com/science/article/pii/S1053811916305560, doi:https://doi.org/10.1016/j.neuroimage.2016.10.009.">De Leener <em>et al.</em>, 2017</a>]</span>, eg</p></li>
+<li><p>Install <a class="reference external" href="https://spinalcordtoolbox.com/user_section/installation.html">Spinal Cord Toolbox</a> <span id="id6">[<a class="reference internal" href="#id9" title="Benjamin De Leener, Simon Lévy, Sara M. Dupont, Vladimir S. Fonov, Nikola Stikov, D. Louis Collins, Virginie Callot, and Julien Cohen-Adad. Sct: spinal cord toolbox, an open-source software for processing spinal cord \MRI\ data. NeuroImage, 145, Part A():24 - 43, 2017. URL: http://www.sciencedirect.com/science/article/pii/S1053811916305560, doi:https://doi.org/10.1016/j.neuroimage.2016.10.009.">De Leener <em>et al.</em>, 2017</a>]</span>, eg</p></li>
 </ul>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install Python libaries</span>
 !wget<span class="w"> </span>-O<span class="w"> </span>requirements.txt<span class="w"> </span>https://raw.githubusercontent.com/shimming-toolbox/rf-shimming-7t/main/requirements.txt
@@ -593,7 +603,7 @@ repo2data<span class="w"> </span>-r<span class="w"> </span>../binder/data_requir
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/index_25_0.png" src="_images/index_25_0.png" />
+<img alt="_images/index_27_0.png" src="_images/index_27_0.png" />
 </div>
 </div>
 <p>Perform statistics</p>
@@ -892,7 +902,7 @@ Paired t-tests:
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/index_38_0.png" src="_images/index_38_0.png" />
+<img alt="_images/index_40_0.png" src="_images/index_40_0.png" />
 </div>
 </div>
 <p>Perform statistics</p>
@@ -1120,19 +1130,37 @@ Paired t-tests:
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/index_44_0.png" src="_images/index_44_0.png" />
+<img alt="_images/index_46_0.png" src="_images/index_46_0.png" />
 </div>
 </div>
 </div>
 <div class="tex2jax_ignore mathjax_ignore section" id="references">
 <h1>References<a class="headerlink" href="#references" title="Permalink to this headline">#</a></h1>
-<div class="docutils container" id="id4">
+<div class="docutils container" id="id7">
 <dl class="citation">
-<dt class="label" id="id5"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dt class="label" id="id13"><span class="brackets"><a class="fn-backref" href="#id3">1</a></span></dt>
+<dd><p>Christopher M Collins, Wanzhan Liu, Weston Schreiber, Qing X Yang, and Michael B Smith. Central brightening due to constructive interference with, without, and despite dielectric resonance. <em>J. Magn. Reson. Imaging</em>, 21(2):192–196, February 2005.</p>
+</dd>
+<dt class="label" id="id8"><span class="brackets"><a class="fn-backref" href="#id4">2</a></span></dt>
 <dd><p>Alexandre D'Astous, Gaspard Cereza, Daniel Papp, Kyle M. Gilbert, Jason P. Stockmann, Eva Alonso-Ortiz, and Julien Cohen-Adad. Shimming toolbox: an open-source software toolbox for b0 and b1 shimming in mri. <em>Magnetic Resonance in Medicine</em>, 89(4):1401–1417, 2023. URL: <a class="reference external" href="https://onlinelibrary.wiley.com/doi/abs/10.1002/mrm.29528">https://onlinelibrary.wiley.com/doi/abs/10.1002/mrm.29528</a>, <a class="reference external" href="https://arxiv.org/abs/https://onlinelibrary.wiley.com/doi/pdf/10.1002/mrm.29528">arXiv:https://onlinelibrary.wiley.com/doi/pdf/10.1002/mrm.29528</a>, <a class="reference external" href="https://doi.org/https://doi.org/10.1002/mrm.29528">doi:https://doi.org/10.1002/mrm.29528</a>.</p>
 </dd>
-<dt class="label" id="id6"><span class="brackets">2</span><span class="fn-backref">(<a href="#id2">1</a>,<a href="#id3">2</a>)</span></dt>
+<dt class="label" id="id11"><span class="brackets"><a class="fn-backref" href="#id2">3</a></span></dt>
+<dd><p>Gergely David, Siawoosh Mohammadi, Allan R Martin, Julien Cohen-Adad, Nikolaus Weiskopf, Alan Thompson, and Patrick Freund. Traumatic and nontraumatic spinal cord injury: pathological insights from neuroimaging. <em>Nat. Rev. Neurol.</em>, 15(12):718–731, December 2019.</p>
+</dd>
+<dt class="label" id="id9"><span class="brackets">4</span><span class="fn-backref">(<a href="#id5">1</a>,<a href="#id6">2</a>)</span></dt>
 <dd><p>Benjamin De Leener, Simon Lévy, Sara M. Dupont, Vladimir S. Fonov, Nikola Stikov, D. Louis Collins, Virginie Callot, and Julien Cohen-Adad. Sct: spinal cord toolbox, an open-source software for processing spinal cord \MRI\ data. <em>NeuroImage</em>, 145, Part A():24 – 43, 2017. URL: <a class="reference external" href="http://www.sciencedirect.com/science/article/pii/S1053811916305560">http://www.sciencedirect.com/science/article/pii/S1053811916305560</a>, <a class="reference external" href="https://doi.org/https://doi.org/10.1016/j.neuroimage.2016.10.009">doi:https://doi.org/10.1016/j.neuroimage.2016.10.009</a>.</p>
+</dd>
+<dt class="label" id="id12"><span class="brackets"><a class="fn-backref" href="#id3">5</a></span></dt>
+<dd><p>Tamer S Ibrahim, Robert Lee, Amir M Abduljalil, Brian A Baertlein, and Pierre-Marie L Robitaille. Dielectric resonances and B1 field inhomogeneity in UHF MRI: computational analysis and experimental findings. 2001. Accessed: 2020-8-10.</p>
+</dd>
+<dt class="label" id="id10"><span class="brackets"><a class="fn-backref" href="#id1">6</a></span></dt>
+<dd><p>Hugh Kearney, David H Miller, and Olga Ciccarelli. Spinal cord MRI in multiple sclerosis–diagnostic, prognostic and clinical value. <em>Nat. Rev. Neurol.</em>, 11(6):327–338, June 2015.</p>
+</dd>
+<dt class="label" id="id14"><span class="brackets"><a class="fn-backref" href="#id3">7</a></span></dt>
+<dd><p>P Röschmann. Radiofrequency penetration and absorption in the human body: limitations to high-field whole-body nuclear magnetic resonance imaging. <em>Med. Phys.</em>, 14(6):922–931, November 1987.</p>
+</dd>
+<dt class="label" id="id15"><span class="brackets"><a class="fn-backref" href="#id3">8</a></span></dt>
+<dd><p>Qing X Yang, Jinghua Wang, Xiaoliang Zhang, Christopher M Collins, Michael B Smith, Haiying Liu, Xiao-Hong Zhu, J Thomas Vaughan, Kamil Ugurbil, and Wei Chen. Analysis of wave behavior in lossy dielectric samples at high field. <em>Magn. Reson. Med.</em>, 47(5):982–989, May 2002.</p>
 </dd>
 </dl>
 </div>
