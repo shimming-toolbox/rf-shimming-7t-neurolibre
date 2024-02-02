@@ -237,7 +237,7 @@ Analysis code for the paper "RF shimming in the cervical spinal cord at 7T"
 </pre></div>
 </div>
 </div>
-<p>Test citation: <span id="id1">[<a class="reference internal" href="#id4" title="Alexandre D'Astous, Gaspard Cereza, Daniel Papp, Kyle M. Gilbert, Jason P. Stockmann, Eva Alonso-Ortiz, and Julien Cohen-Adad. Shimming toolbox: an open-source software toolbox for b0 and b1 shimming in mri. Magnetic Resonance in Medicine, 89(4):1401-1417, 2023. URL: https://onlinelibrary.wiley.com/doi/abs/10.1002/mrm.29528, arXiv:https://onlinelibrary.wiley.com/doi/pdf/10.1002/mrm.29528, doi:https://doi.org/10.1002/mrm.29528.">D'Astous <em>et al.</em>, 2023</a>]</span>.</p>
+<p>Test citation: <span id="id1">[<a class="reference internal" href="#id3" title="Alexandre D'Astous, Gaspard Cereza, Daniel Papp, Kyle M. Gilbert, Jason P. Stockmann, Eva Alonso-Ortiz, and Julien Cohen-Adad. Shimming toolbox: an open-source software toolbox for b0 and b1 shimming in mri. Magnetic Resonance in Medicine, 89(4):1401-1417, 2023. URL: https://onlinelibrary.wiley.com/doi/abs/10.1002/mrm.29528, arXiv:https://onlinelibrary.wiley.com/doi/pdf/10.1002/mrm.29528, doi:https://doi.org/10.1002/mrm.29528.">D'Astous <em>et al.</em>, 2023</a>]</span>.</p>
 </div>
 <div class="tex2jax_ignore mathjax_ignore section" id="overview-of-processing-pipeline">
 <h1>2     |     Overview of processing pipeline<a class="headerlink" href="#overview-of-processing-pipeline" title="Permalink to this headline">#</a></h1>
@@ -301,7 +301,7 @@ repo2data<span class="w"> </span>-r<span class="w"> </span>../binder/data_requir
 </div>
 </div>
 <div class="tex2jax_ignore mathjax_ignore section" id="environment-setup">
-<h1>3     |     Environment setup<a class="headerlink" href="#environment-setup" title="Permalink to this headline">#</a></h1>
+<h1>4     |     Environment setup<a class="headerlink" href="#environment-setup" title="Permalink to this headline">#</a></h1>
 <p>In a Python shell:</p>
 <p>Import the necessary modules.</p>
 <div class="cell tag_remove_output tag_hide_input docutils container">
@@ -352,8 +352,8 @@ repo2data<span class="w"> </span>-r<span class="w"> </span>../binder/data_requir
 </div>
 </div>
 </div>
-<div class="tex2jax_ignore mathjax_ignore section" id="id2">
-<h1>3     |     Overview of processing pipeline<a class="headerlink" href="#id2" title="Permalink to this headline">#</a></h1>
+<div class="tex2jax_ignore mathjax_ignore section" id="process-anat-t2starw-gre">
+<h1>5     |     Process anat/T2starw (GRE)<a class="headerlink" href="#process-anat-t2starw-gre" title="Permalink to this headline">#</a></h1>
 <p>Run segmentation on GRE scan</p>
 <div class="cell tag_hide_input docutils container">
 <div class="cell_input docutils container">
@@ -683,11 +683,439 @@ Paired t-tests:
 </div>
 </div>
 </div>
+<div class="tex2jax_ignore mathjax_ignore section" id="process-fmap-tfl-flip-angle-maps">
+<h1>6     |     Process fmap/TFL (flip angle maps)<a class="headerlink" href="#process-fmap-tfl-flip-angle-maps" title="Permalink to this headline">#</a></h1>
+<p>Register TFL flip angle maps to the GRE scan ⏳</p>
+<div class="cell tag_hide_input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">notebook</span> <span class="o">!=</span> <span class="s1">&#39;figures&#39;</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">subject</span> <span class="ow">in</span> <span class="n">subjects</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_data</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="s2">&quot;fmap&quot;</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">shim_mode</span> <span class="ow">in</span> <span class="n">shim_modes</span><span class="p">:</span>
+            <span class="o">!</span>sct_register_multimodal<span class="w"> </span>-i<span class="w"> </span><span class="o">{</span>subject<span class="o">}</span>_acq-anat<span class="o">{</span>shim_mode<span class="o">}</span>_TB1TFL.nii.gz<span class="w"> </span>-d<span class="w"> </span>../anat/<span class="o">{</span>subject<span class="o">}</span>_acq-CoV_T2starw_crop.nii.gz<span class="w"> </span>-dseg<span class="w"> </span>../anat/<span class="o">{</span>subject<span class="o">}</span>_acq-CoV_T2starw_crop_seg.nii.gz<span class="w"> </span>-param<span class="w"> </span><span class="nv">step</span><span class="o">=</span><span class="m">1</span>,type<span class="o">=</span>im,algo<span class="o">=</span>slicereg,metric<span class="o">=</span>CC<span class="w"> </span>-qc<span class="w"> </span><span class="o">{</span>path_qc<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Warping spinal cord segmentation and vertebral level to each flip angle map</p>
+<div class="cell tag_hide_input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">notebook</span> <span class="o">!=</span> <span class="s1">&#39;figures&#39;</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">subject</span> <span class="ow">in</span> <span class="n">subjects</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_data</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="s2">&quot;fmap&quot;</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">shim_mode</span> <span class="ow">in</span> <span class="n">shim_modes</span><span class="p">:</span>
+            <span class="c1"># Use linear interpolation to preserve partial volume information (needed when extracting values along the cord)</span>
+            <span class="o">!</span>sct_apply_transfo<span class="w"> </span>-i<span class="w"> </span>../anat/<span class="o">{</span>subject<span class="o">}</span>_acq-CoV_T2starw_crop_seg.nii.gz<span class="w"> </span>-d<span class="w"> </span><span class="o">{</span>subject<span class="o">}</span>_acq-anat<span class="o">{</span>shim_mode<span class="o">}</span>_TB1TFL.nii.gz<span class="w"> </span>-w<span class="w"> </span>warp_<span class="o">{</span>subject<span class="o">}</span>_acq-CoV_T2starw_crop2<span class="o">{</span>subject<span class="o">}</span>_acq-anat<span class="o">{</span>shim_mode<span class="o">}</span>_TB1TFL.nii.gz<span class="w"> </span>-x<span class="w"> </span>linear<span class="w"> </span>-o<span class="w"> </span><span class="o">{</span>subject<span class="o">}</span>_acq-anat<span class="o">{</span>shim_mode<span class="o">}</span>_TB1TFL_seg.nii.gz
+            <span class="c1"># Use nearest neighbour (nn) interpolation because we are dealing with non-binary discrete labels</span>
+            <span class="o">!</span>sct_apply_transfo<span class="w"> </span>-i<span class="w"> </span>../anat/<span class="o">{</span>subject<span class="o">}</span>_acq-CoV_T2starw_crop_seg_labeled.nii.gz<span class="w"> </span>-d<span class="w"> </span><span class="o">{</span>subject<span class="o">}</span>_acq-anat<span class="o">{</span>shim_mode<span class="o">}</span>_TB1TFL.nii.gz<span class="w"> </span>-w<span class="w"> </span>warp_<span class="o">{</span>subject<span class="o">}</span>_acq-CoV_T2starw_crop2<span class="o">{</span>subject<span class="o">}</span>_acq-anat<span class="o">{</span>shim_mode<span class="o">}</span>_TB1TFL.nii.gz<span class="w"> </span>-x<span class="w"> </span>nn<span class="w"> </span>-o<span class="w"> </span><span class="o">{</span>subject<span class="o">}</span>_acq-anat<span class="o">{</span>shim_mode<span class="o">}</span>_TB1TFL_seg_labeled.nii.gz
+</pre></div>
+</div>
+</div>
+</div>
+<p>Convert the flip angle maps to B1+ efficiency maps [nT/V] (inspired by code from Kyle Gilbert).</p>
+<p>The approach consists in calculating the B1+ efficiency using a 1ms, pi-pulse at the acquisition voltage, then scale the efficiency by the ratio of the measured flip angle to the requested flip angle in the pulse sequence.</p>
+<div class="cell tag_hide_input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">GAMMA</span> <span class="o">=</span> <span class="mf">2.675e8</span><span class="p">;</span>  <span class="c1"># [rad / (s T)]</span>
+<span class="n">requested_fa</span> <span class="o">=</span> <span class="mi">90</span>  <span class="c1"># saturation flip angle -- hard-coded in sequence</span>
+
+<span class="k">if</span> <span class="n">notebook</span> <span class="o">!=</span> <span class="s1">&#39;figures&#39;</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">subject</span> <span class="ow">in</span> <span class="n">subjects</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_data</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="s2">&quot;fmap&quot;</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">shim_mode</span> <span class="ow">in</span> <span class="n">shim_modes</span><span class="p">:</span>
+            <span class="c1"># Fetch the reference voltage from the JSON sidecar to the TFL B1map sequence</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">subject</span><span class="si">}</span><span class="s2">_acq-famp</span><span class="si">{</span><span class="n">shim_mode</span><span class="si">}</span><span class="s2">_TB1TFL.json&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">metadata</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+                <span class="n">ref_voltage</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;TxRefAmp&quot;</span><span class="p">,</span> <span class="s2">&quot;N/A&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ref_voltage [V]: </span><span class="si">{</span><span class="n">ref_voltage</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">subject</span><span class="si">}</span><span class="s2">_acq-famp</span><span class="si">{</span><span class="n">shim_mode</span><span class="si">}</span><span class="s2">_TB1TFL)&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Open flip angle map with nibabel</span>
+            <span class="n">nii</span> <span class="o">=</span> <span class="n">nib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">subject</span><span class="si">}</span><span class="s2">_acq-famp</span><span class="si">{</span><span class="n">shim_mode</span><span class="si">}</span><span class="s2">_TB1TFL.nii.gz&quot;</span><span class="p">)</span>
+            <span class="n">acquired_fa</span> <span class="o">=</span> <span class="n">nii</span><span class="o">.</span><span class="n">get_fdata</span><span class="p">()</span>
+
+            <span class="c1"># Siemens maps are in units of flip angle * 10 (in degrees)</span>
+            <span class="n">acquired_fa</span> <span class="o">=</span> <span class="n">acquired_fa</span> <span class="o">/</span> <span class="mi">10</span>
+
+            <span class="c1"># Account for the power loss between the coil and the socket. That number was given by Siemens.</span>
+            <span class="n">voltage_at_socket</span> <span class="o">=</span> <span class="n">ref_voltage</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">**</span> <span class="o">-</span><span class="mf">0.095</span>
+
+            <span class="c1"># Compute B1 map in [T/V]</span>
+            <span class="n">b1_map</span> <span class="o">=</span> <span class="p">(</span><span class="n">acquired_fa</span> <span class="o">/</span> <span class="n">requested_fa</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="p">(</span><span class="n">GAMMA</span> <span class="o">*</span> <span class="mf">1e-3</span> <span class="o">*</span> <span class="n">voltage_at_socket</span><span class="p">))</span>
+
+            <span class="c1"># Convert to [nT/V]</span>
+            <span class="n">b1_map</span> <span class="o">=</span> <span class="n">b1_map</span> <span class="o">*</span> <span class="mf">1e9</span>
+
+            <span class="c1"># Save as NIfTI file</span>
+            <span class="n">nii_b1</span> <span class="o">=</span> <span class="n">nib</span><span class="o">.</span><span class="n">Nifti1Image</span><span class="p">(</span><span class="n">b1_map</span><span class="p">,</span> <span class="n">nii</span><span class="o">.</span><span class="n">affine</span><span class="p">,</span> <span class="n">nii</span><span class="o">.</span><span class="n">header</span><span class="p">)</span>
+            <span class="n">nib</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">nii_b1</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">subject</span><span class="si">}</span><span class="s2">_acq-</span><span class="si">{</span><span class="n">shim_mode</span><span class="si">}</span><span class="s2">_TB1map.nii.gz&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Extract B1+ value along the spinal cord between levels C3 and T2 (included)</p>
+<div class="cell tag_hide_input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">notebook</span> <span class="o">!=</span> <span class="s1">&#39;figures&#39;</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">subject</span> <span class="ow">in</span> <span class="n">subjects</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_data</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="s2">&quot;fmap&quot;</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">shim_mode</span> <span class="ow">in</span> <span class="n">shim_modes</span><span class="p">:</span>
+            <span class="n">fname_result_b1plus</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_results</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">subject</span><span class="si">}</span><span class="s2">_TB1map_</span><span class="si">{</span><span class="n">shim_mode</span><span class="si">}</span><span class="s2">.csv&quot;</span><span class="p">)</span>
+            <span class="o">!</span>sct_extract_metric<span class="w"> </span>-i<span class="w"> </span><span class="o">{</span>subject<span class="o">}</span>_acq-<span class="o">{</span>shim_mode<span class="o">}</span>_TB1map.nii.gz<span class="w"> </span>-f<span class="w"> </span><span class="o">{</span>subject<span class="o">}</span>_acq-anat<span class="o">{</span>shim_mode<span class="o">}</span>_TB1TFL_seg.nii.gz<span class="w"> </span>-method<span class="w"> </span>wa<span class="w"> </span>-vert<span class="w"> </span><span class="m">3</span>:9<span class="w"> </span>-vertfile<span class="w"> </span><span class="o">{</span>subject<span class="o">}</span>_acq-anat<span class="o">{</span>shim_mode<span class="o">}</span>_TB1TFL_seg_labeled.nii.gz<span class="w"> </span>-perslice<span class="w"> </span><span class="m">1</span><span class="w"> </span>-o<span class="w"> </span><span class="o">{</span>fname_result_b1plus<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Make figure of B1+ values along the spinal cord across shim methods</p>
+<div class="cell tag_hide_input tag_report_output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Go back to root data folder</span>
+<span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_data</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">smooth_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">window_size</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Apply a simple moving average to smooth the data. &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">uniform_filter1d</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">window_size</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">)</span>
+
+<span class="c1"># Fixed grid for x-axis</span>
+<span class="n">x_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="c1"># z-slices corresponding to levels C3 to T2 on the PAM50 template. These will be used to scale the x-label of each subject.</span>
+<span class="n">original_vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">907</span><span class="p">,</span> <span class="mi">870</span><span class="p">,</span> <span class="mi">833</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">769</span><span class="p">,</span> <span class="mi">735</span><span class="p">,</span> <span class="mi">692</span><span class="p">,</span> <span class="mi">646</span><span class="p">])</span>
+
+<span class="c1"># Normalize the PAM50 z-slice numbers to the 1-0 range (to show inferior-superior instead of superior-inferior)</span>
+<span class="n">min_val</span> <span class="o">=</span> <span class="n">original_vector</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+<span class="n">max_val</span> <span class="o">=</span> <span class="n">original_vector</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<span class="n">normalized_vector</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">((</span><span class="n">original_vector</span> <span class="o">-</span> <span class="n">min_val</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">max_val</span> <span class="o">-</span> <span class="n">min_val</span><span class="p">))</span>
+
+<span class="c1"># Use this normalized vector as x-ticks</span>
+<span class="n">custom_xticks</span> <span class="o">=</span> <span class="n">normalized_vector</span>
+
+<span class="c1"># Vertebral level labels</span>
+<span class="n">vertebral_levels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;C3&quot;</span><span class="p">,</span> <span class="s2">&quot;C4&quot;</span><span class="p">,</span> <span class="s2">&quot;C5&quot;</span><span class="p">,</span> <span class="s2">&quot;C6&quot;</span><span class="p">,</span> <span class="s2">&quot;C7&quot;</span><span class="p">,</span> <span class="s2">&quot;T1&quot;</span><span class="p">,</span> <span class="s2">&quot;T2&quot;</span><span class="p">]</span>
+<span class="c1"># Calculate midpoints for label positions</span>
+<span class="n">label_positions</span> <span class="o">=</span> <span class="n">normalized_vector</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">normalized_vector</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+
+<span class="c1"># Number of subjects determines the number of rows in the subplot</span>
+<span class="n">n_rows</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">subjects</span><span class="p">)</span>
+
+<span class="c1"># Create a figure with multiple subplots</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">n_rows</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span> <span class="o">*</span> <span class="n">n_rows</span><span class="p">))</span>
+<span class="n">font_size</span> <span class="o">=</span> <span class="mi">18</span>
+<span class="n">line_width</span> <span class="o">=</span> <span class="mi">3</span>
+
+<span class="c1"># Check if axes is an array or a single object</span>
+<span class="k">if</span> <span class="n">n_rows</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="n">axes</span> <span class="o">=</span> <span class="p">[</span><span class="n">axes</span><span class="p">]</span>
+
+<span class="c1"># Data storage for statistics</span>
+<span class="n">data_stats</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Iterate over each subject and create a subplot</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">subject</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">subjects</span><span class="p">):</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_data</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="s2">&quot;fmap&quot;</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">shim_mode</span> <span class="ow">in</span> <span class="n">shim_modes</span><span class="p">:</span>
+        <span class="c1"># Initialize list to collect data for this shim method</span>
+        <span class="n">method_data</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">file_csv</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_results</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">subject</span><span class="si">}</span><span class="s2">_TB1map_</span><span class="si">{</span><span class="n">shim_mode</span><span class="si">}</span><span class="s2">.csv&quot;</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file_csv</span><span class="p">)</span>
+        <span class="n">wa_data</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;WA()&#39;</span><span class="p">]</span>
+
+        <span class="c1"># Normalize the x-axis to a 1-0 scale for each subject (to go from superior-inferior direction)</span>
+        <span class="n">x_subject</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">wa_data</span><span class="p">))</span>
+
+        <span class="c1"># Interpolate to the fixed grid</span>
+        <span class="n">interp_func</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">x_subject</span><span class="p">,</span> <span class="n">wa_data</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">bounds_error</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="s1">&#39;extrapolate&#39;</span><span class="p">)</span>
+        <span class="n">resampled_data</span> <span class="o">=</span> <span class="n">interp_func</span><span class="p">(</span><span class="n">x_grid</span><span class="p">)</span>
+
+        <span class="c1"># Apply smoothing</span>
+        <span class="n">smoothed_data</span> <span class="o">=</span> <span class="n">smooth_data</span><span class="p">(</span><span class="n">resampled_data</span><span class="p">)</span>
+
+        <span class="n">method_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">smoothed_data</span><span class="p">)</span>
+
+        <span class="c1"># If there&#39;s data for this shim method, plot it</span>
+        <span class="k">if</span> <span class="n">method_data</span><span class="p">:</span>
+            <span class="c1"># Plotting each file&#39;s data separately</span>
+            <span class="k">for</span> <span class="n">resampled_data</span> <span class="ow">in</span> <span class="n">method_data</span><span class="p">:</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_grid</span><span class="p">,</span> <span class="n">resampled_data</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">shim_mode</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">line_width</span><span class="p">)</span>
+
+            <span class="c1"># Compute stats on the non-resampled data (to avoid interpolation errors)</span>
+            <span class="n">mean_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">wa_data</span><span class="p">)</span>
+            <span class="n">sd_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">wa_data</span><span class="p">)</span>
+            <span class="n">data_stats</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">subject</span><span class="p">,</span> <span class="n">shim_mode</span><span class="p">,</span> <span class="n">mean_data</span><span class="p">,</span> <span class="n">sd_data</span><span class="p">])</span>
+
+    <span class="c1"># Set x-ticks and labels for the bottom subplot</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">n_rows</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># Check if it&#39;s the last subplot</span>
+        <span class="c1"># Create a secondary axis for vertebral level labels</span>
+        <span class="n">secax</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">secondary_xaxis</span><span class="p">(</span><span class="s1">&#39;bottom&#39;</span><span class="p">)</span>
+        <span class="n">secax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">label_positions</span><span class="p">)</span>
+        <span class="n">secax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">vertebral_levels</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">font_size</span><span class="o">-</span><span class="mi">4</span><span class="p">)</span>
+        <span class="n">secax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;major&#39;</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># Hide tick marks</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">custom_xticks</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="s1">&#39;&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">custom_xticks</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;major&#39;</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># Hide tick marks for the primary axis</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">subject</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">font_size</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;B1+ efficiency [nT/V]&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">font_size</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;major&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="n">font_size</span><span class="o">-</span><span class="mi">4</span><span class="p">)</span>
+
+    <span class="c1"># Add legend only to the first subplot</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="n">font_size</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Adjust the layout so labels and titles do not overlap</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_results</span><span class="p">,</span> <span class="s1">&#39;fig_b1plus.png&#39;</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;png&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/index_38_0.png" src="_images/index_38_0.png" />
+</div>
+</div>
+<p>Perform statistics</p>
+<div class="cell tag_hide_input tag_report_output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Convert to DataFrame and save to CSV</span>
+<span class="n">df_stats</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data_stats</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Subject&#39;</span><span class="p">,</span> <span class="s1">&#39;Shim_Mode&#39;</span><span class="p">,</span> <span class="s1">&#39;Average&#39;</span><span class="p">,</span> <span class="s1">&#39;Standard_Deviation&#39;</span><span class="p">])</span>
+<span class="n">df_stats</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_results</span><span class="p">,</span> <span class="s1">&#39;stats_b1plus.csv&#39;</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># Compute statistics across subjects</span>
+<span class="n">grouped_means</span> <span class="o">=</span> <span class="n">df_stats</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Shim_Mode&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s1">&#39;Average&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="s1">&#39;std&#39;</span><span class="p">],</span> <span class="s1">&#39;Standard_Deviation&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="s1">&#39;std&#39;</span><span class="p">]})</span>
+
+<span class="c1"># Format mean ± standard deviation</span>
+<span class="n">grouped_means</span><span class="p">[</span><span class="s1">&#39;Average_formatted&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grouped_means</span><span class="p">[</span><span class="s1">&#39;Average&#39;</span><span class="p">][</span><span class="s1">&#39;mean&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; ± &quot;</span> <span class="o">+</span> <span class="n">grouped_means</span><span class="p">[</span><span class="s1">&#39;Average&#39;</span><span class="p">][</span><span class="s1">&#39;std&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">)</span>
+<span class="n">grouped_means</span><span class="p">[</span><span class="s1">&#39;Standard_Deviation_formatted&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grouped_means</span><span class="p">[</span><span class="s1">&#39;Standard_Deviation&#39;</span><span class="p">][</span><span class="s1">&#39;mean&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; ± &quot;</span> <span class="o">+</span> <span class="n">grouped_means</span><span class="p">[</span><span class="s1">&#39;Standard_Deviation&#39;</span><span class="p">][</span><span class="s1">&#39;std&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">)</span>
+
+<span class="c1"># Drop multi-level index and only keep formatted columns</span>
+<span class="n">grouped_means</span> <span class="o">=</span> <span class="n">grouped_means</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Average&#39;</span><span class="p">,</span> <span class="s1">&#39;Standard_Deviation&#39;</span><span class="p">])</span>
+<span class="n">grouped_means</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Average&#39;</span><span class="p">,</span> <span class="s1">&#39;Standard_Deviation&#39;</span><span class="p">]</span>  <span class="c1"># Rename columns for clarity</span>
+<span class="n">grouped_means</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_results</span><span class="p">,</span> <span class="s1">&#39;stats_b1plus_average_across_subjects.csv&#39;</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># Perform Repeated Measures ANOVA</span>
+<span class="n">aovrm</span> <span class="o">=</span> <span class="n">AnovaRM</span><span class="p">(</span><span class="n">df_stats</span><span class="p">,</span> <span class="s1">&#39;Average&#39;</span><span class="p">,</span> <span class="s1">&#39;Subject&#39;</span><span class="p">,</span> <span class="n">within</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Shim_Mode&#39;</span><span class="p">])</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">aovrm</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+
+<span class="c1"># Perform Post Hoc paired t-tests</span>
+
+<span class="c1"># Filter out subjects that don&#39;t have all shim modes</span>
+<span class="n">shim_modes</span> <span class="o">=</span> <span class="n">df_stats</span><span class="p">[</span><span class="s1">&#39;Shim_Mode&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+<span class="n">valid_subjects</span> <span class="o">=</span> <span class="n">df_stats</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Subject&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">all</span><span class="p">(</span><span class="n">mode</span> <span class="ow">in</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;Shim_Mode&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="n">shim_modes</span><span class="p">))</span>
+
+<span class="c1"># Pairwise comparisons</span>
+<span class="n">pairs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">combinations</span><span class="p">(</span><span class="n">shim_modes</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">p_values</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">pairs</span><span class="p">:</span>
+    <span class="n">data1</span> <span class="o">=</span> <span class="n">valid_subjects</span><span class="p">[</span><span class="n">valid_subjects</span><span class="p">[</span><span class="s1">&#39;Shim_Mode&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;Average&#39;</span><span class="p">]</span>
+    <span class="n">data2</span> <span class="o">=</span> <span class="n">valid_subjects</span><span class="p">[</span><span class="n">valid_subjects</span><span class="p">[</span><span class="s1">&#39;Shim_Mode&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="s1">&#39;Average&#39;</span><span class="p">]</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">p_value</span> <span class="o">=</span> <span class="n">ttest_rel</span><span class="p">(</span><span class="n">data1</span><span class="p">,</span> <span class="n">data2</span><span class="p">)</span>
+    <span class="n">p_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p_value</span><span class="p">)</span>
+
+<span class="c1"># Function for Benjamini-Hochberg FDR correction</span>
+<span class="k">def</span> <span class="nf">benjamini_hochberg</span><span class="p">(</span><span class="n">p_values</span><span class="p">):</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">p_values</span><span class="p">)</span>
+    <span class="n">sorted_p_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">p_values</span><span class="p">)</span>
+    <span class="n">sorted_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">p_values</span><span class="p">)</span>
+    <span class="n">adjusted_p_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sorted_p_values</span><span class="p">):</span>
+        <span class="n">adjusted_p_values</span><span class="p">[</span><span class="n">sorted_index</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">p</span> <span class="o">*</span> <span class="n">n</span> <span class="o">/</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">adjusted_p_values</span>
+
+<span class="c1"># Applying Benjamini-Hochberg FDR correction</span>
+<span class="n">adjusted_p_values</span> <span class="o">=</span> <span class="n">benjamini_hochberg</span><span class="p">(</span><span class="n">p_values</span><span class="p">)</span>
+
+<span class="c1"># Creating a summary DataFrame</span>
+<span class="n">comparison_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;Pair&#39;</span><span class="p">:</span> <span class="n">pairs</span><span class="p">,</span> <span class="s1">&#39;P-Value&#39;</span><span class="p">:</span> <span class="n">p_values</span><span class="p">,</span> <span class="s1">&#39;Adjusted P-Value&#39;</span><span class="p">:</span> <span class="n">adjusted_p_values</span><span class="p">})</span>
+
+<span class="c1"># Save to CSV</span>
+<span class="n">comparison_results</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_results</span><span class="p">,</span> <span class="s1">&#39;stats_b1plus_paired_ttest.csv&#39;</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Paired t-tests:</span><span class="se">\n</span><span class="si">{</span><span class="n">comparison_results</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                 Anova
+=======================================
+          F Value Num DF  Den DF Pr &gt; F
+---------------------------------------
+Shim_Mode 14.0743 6.0000 24.0000 0.0000
+=======================================
+
+Paired t-tests:
+                 Pair   P-Value  Adjusted P-Value
+0       (CP, patient)  0.007728          0.040570
+1        (CP, volume)  0.009006          0.037825
+2         (CP, phase)  0.079896          0.104863
+3           (CP, CoV)  0.318010          0.371012
+4        (CP, target)  0.010284          0.030853
+5        (CP, SAReff)  0.563249          0.622539
+6   (patient, volume)  0.821572          0.862651
+7    (patient, phase)  0.005550          0.116560
+8      (patient, CoV)  0.036644          0.059195
+9   (patient, target)  0.006302          0.066176
+10  (patient, SAReff)  0.010083          0.035289
+11    (volume, phase)  0.006565          0.045958
+12      (volume, CoV)  0.032112          0.056197
+13   (volume, target)  0.027717          0.052915
+14   (volume, SAReff)  0.012891          0.030078
+15       (phase, CoV)  0.989088          0.989088
+16    (phase, target)  0.011515          0.030226
+17    (phase, SAReff)  0.070778          0.099089
+18      (CoV, target)  0.236842          0.292570
+19      (CoV, SAReff)  0.061149          0.091724
+20   (target, SAReff)  0.018986          0.039871
+</pre></div>
+</div>
+</div>
+</div>
+<p>Prepare RF shimming mask for figure</p>
+<div class="cell tag_hide_input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select subject to show</span>
+<span class="n">subject</span> <span class="o">=</span> <span class="s1">&#39;sub-05&#39;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_data</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="s2">&quot;fmap&quot;</span><span class="p">))</span>
+
+<span class="c1"># Create RF shimming mask from the segmentation (re-create the live RF shimming procedure)</span>
+<span class="n">file_mask</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">subject</span><span class="si">}</span><span class="s2">_acq-anatCP_TB1TFL_mask-shimming.nii.gz&quot;</span>
+<span class="k">if</span> <span class="n">notebook</span> <span class="o">!=</span> <span class="s1">&#39;figures&#39;</span><span class="p">:</span>
+
+    <span class="o">!</span>sct_maths<span class="w"> </span>-i<span class="w"> </span><span class="o">{</span>subject<span class="o">}</span>_acq-anatCP_TB1TFL_seg_labeled.nii.gz<span class="w"> </span>-thr<span class="w"> </span><span class="m">3</span><span class="w"> </span>-uthr<span class="w"> </span><span class="m">9</span><span class="w"> </span>-o<span class="w"> </span><span class="o">{</span>file_mask<span class="o">}</span>
+    <span class="o">!</span>sct_maths<span class="w"> </span>-i<span class="w"> </span><span class="o">{</span>file_mask<span class="o">}</span><span class="w"> </span>-bin<span class="w"> </span><span class="m">1</span><span class="w"> </span>-o<span class="w"> </span><span class="o">{</span>file_mask<span class="o">}</span>
+    <span class="o">!</span>sct_create_mask<span class="w"> </span>-i<span class="w"> </span><span class="o">{</span>subject<span class="o">}</span>_acq-anatCP_TB1TFL.nii.gz<span class="w"> </span>-p<span class="w"> </span>centerline,<span class="o">{</span>file_mask<span class="o">}</span><span class="w"> </span>-size<span class="w"> </span>28mm<span class="w"> </span>-f<span class="w"> </span>cylinder<span class="w"> </span>-o<span class="w"> </span><span class="o">{</span>file_mask<span class="o">}</span>
+
+    <span class="c1"># Dilate mask</span>
+    <span class="o">!</span>sct_maths<span class="w"> </span>-i<span class="w"> </span><span class="o">{</span>file_mask<span class="o">}</span><span class="w"> </span>-dilate<span class="w"> </span><span class="m">2</span><span class="w"> </span>-shape<span class="w"> </span>disk<span class="w"> </span>-dim<span class="w"> </span><span class="m">2</span><span class="w"> </span>-o<span class="w"> </span><span class="o">{</span>subject<span class="o">}</span>_acq-anatCP_TB1TFL_mask-shimming_dil.nii.gz
+    <span class="c1"># Subtract dilated mask with mask to get the edge</span>
+    <span class="o">!</span>sct_maths<span class="w"> </span>-i<span class="w"> </span><span class="o">{</span>subject<span class="o">}</span>_acq-anatCP_TB1TFL_mask-shimming_dil.nii.gz<span class="w"> </span>-sub<span class="w"> </span><span class="o">{</span>file_mask<span class="o">}</span><span class="w"> </span>-o<span class="w"> </span><span class="o">{</span>file_mask<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Create figure of B1+ maps</p>
+<div class="cell tag_hide_input tag_report_output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select subject to show</span>
+<span class="n">subject</span> <span class="o">=</span> <span class="s1">&#39;sub-05&#39;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_data</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="s2">&quot;fmap&quot;</span><span class="p">))</span>
+<span class="n">file_mask</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">subject</span><span class="si">}</span><span class="s2">_acq-anatCP_TB1TFL_mask-shimming.nii.gz&quot;</span>
+
+<span class="c1"># Load the statistics from the CSV file</span>
+<span class="n">stats_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_results</span><span class="p">,</span> <span class="s1">&#39;stats_b1plus.csv&#39;</span><span class="p">))</span>
+
+<span class="c1"># Filter for the specific subject</span>
+<span class="n">subject_stats</span> <span class="o">=</span> <span class="n">stats_df</span><span class="p">[</span><span class="n">stats_df</span><span class="p">[</span><span class="s1">&#39;Subject&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">subject</span><span class="p">]</span>
+
+<span class="c1"># Defining crop limits for resulting figure</span>
+<span class="n">xmin</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">xmax</span> <span class="o">=</span> <span class="mi">110</span>
+<span class="n">ymin</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">ymax</span> <span class="o">=</span> <span class="mi">150</span>
+
+<span class="c1"># Defining dynamic range</span>
+<span class="n">dynmin</span> <span class="o">=</span> <span class="mi">5</span> 
+<span class="n">dynmax</span> <span class="o">=</span> <span class="mi">30</span>
+
+<span class="c1"># Create a figure with multiple subplots</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">font_size</span> <span class="o">=</span> <span class="mi">14</span>
+<span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+<span class="c1"># First, plot the anatomical image with an overlay of the mask</span>
+
+<span class="c1"># Load data</span>
+<span class="n">CP_anat</span><span class="o">=</span><span class="n">nib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">subject</span><span class="si">}</span><span class="s2">_acq-anatCP_TB1TFL.nii.gz&quot;</span><span class="p">)</span>
+<span class="n">CP_SC</span><span class="o">=</span><span class="n">nib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file_mask</span><span class="p">)</span>
+<span class="n">CP_nTpV</span><span class="o">=</span><span class="n">nib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">subject</span><span class="si">}</span><span class="s2">_acq-CP_TB1map.nii.gz&quot;</span><span class="p">)</span>
+
+<span class="c1"># Defining mask based on the magnitude image intensity threshold</span>
+<span class="n">cslice</span><span class="o">=</span><span class="n">CP_anat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">-</span><span class="mi">2</span> <span class="c1">#shows the SC seg best</span>
+<span class="n">threshold</span><span class="o">=</span><span class="mi">300</span>
+<span class="n">mask</span><span class="o">=</span><span class="n">CP_anat</span><span class="o">.</span><span class="n">get_fdata</span><span class="p">()[</span><span class="n">xmin</span><span class="p">:</span><span class="n">xmax</span><span class="p">,</span><span class="n">ymin</span><span class="p">:</span><span class="n">ymax</span><span class="p">,</span> <span class="n">cslice</span><span class="p">]</span>
+<span class="n">mask</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">mask</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Cropping anat, SC, B1+</span>
+<span class="n">CP_anat</span><span class="o">=</span><span class="n">CP_anat</span><span class="o">.</span><span class="n">get_fdata</span><span class="p">()[</span><span class="n">xmin</span><span class="p">:</span><span class="n">xmax</span><span class="p">,</span><span class="n">ymin</span><span class="p">:</span><span class="n">ymax</span><span class="p">,</span> <span class="n">cslice</span><span class="p">]</span>
+<span class="n">CP_anat</span><span class="o">=</span><span class="n">CP_anat</span><span class="o">*</span><span class="n">mask</span>
+<span class="n">CP_SC</span><span class="o">=</span><span class="n">CP_SC</span><span class="o">.</span><span class="n">get_fdata</span><span class="p">()[</span><span class="n">xmin</span><span class="p">:</span><span class="n">xmax</span><span class="p">,</span><span class="n">ymin</span><span class="p">:</span><span class="n">ymax</span><span class="p">,</span> <span class="n">cslice</span><span class="p">]</span>
+<span class="n">CP_nTpV</span><span class="o">=</span><span class="n">CP_nTpV</span><span class="o">.</span><span class="n">get_fdata</span><span class="p">()[</span><span class="n">xmin</span><span class="p">:</span><span class="n">xmax</span><span class="p">,</span><span class="n">ymin</span><span class="p">:</span><span class="n">ymax</span><span class="p">,</span> <span class="n">cslice</span><span class="p">]</span>
+<span class="n">CP_nTpV</span><span class="o">=</span><span class="n">CP_nTpV</span><span class="o">*</span><span class="n">mask</span>
+
+<span class="c1"># All opacity overalys look ugly: workaround, set the anat slice to a max value where the segmentation exists</span>
+<span class="n">CP_anat</span><span class="p">[</span><span class="n">CP_SC</span><span class="o">&gt;</span><span class="mf">0.5</span><span class="p">]</span><span class="o">=</span><span class="mi">4000</span><span class="p">;</span>
+
+<span class="c1"># Plotting anat overlayed with SC</span>
+<span class="n">splot</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">splot</span><span class="o">.</span><span class="n">imshow</span><span class="p">((</span><span class="n">CP_anat</span><span class="o">.</span><span class="n">T</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span><span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="mi">2000</span><span class="p">)</span><span class="c1">#, interpolation=&#39;spline36&#39;)</span>
+<span class="n">splot</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Anat&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">font_size</span><span class="p">)</span>
+<span class="n">splot</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+
+<span class="c1"># Then, plot each B1+ map, with an overlay of the mean and CV inside the cord</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">shim_mode</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">shim_modes</span><span class="p">):</span>
+    <span class="c1"># Load data</span>
+    <span class="n">B1map</span><span class="o">=</span><span class="n">nib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">subject</span><span class="si">}</span><span class="s2">_acq-</span><span class="si">{</span><span class="n">shim_mode</span><span class="si">}</span><span class="s2">_TB1map.nii.gz&quot;</span><span class="p">)</span>
+    <span class="n">B1map</span><span class="o">=</span><span class="n">B1map</span><span class="o">.</span><span class="n">get_fdata</span><span class="p">()[</span><span class="n">xmin</span><span class="p">:</span><span class="n">xmax</span><span class="p">,</span><span class="n">ymin</span><span class="p">:</span><span class="n">ymax</span><span class="p">,</span> <span class="n">cslice</span><span class="p">]</span>
+    <span class="n">B1map</span><span class="o">=</span><span class="n">B1map</span><span class="o">*</span><span class="n">mask</span>
+
+    <span class="c1"># Plot</span>
+    <span class="n">splot</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">im</span> <span class="o">=</span> <span class="n">splot</span><span class="o">.</span><span class="n">imshow</span><span class="p">((</span><span class="n">B1map</span><span class="o">.</span><span class="n">T</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span><span class="n">vmin</span><span class="o">=</span><span class="n">dynmin</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="n">dynmax</span><span class="p">)</span><span class="c1">#, interpolation=&#39;spline36&#39;)</span>
+    <span class="n">splot</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">shim_mode</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">font_size</span><span class="p">)</span>
+    <span class="n">splot</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Find the statistics for the current shim mode</span>
+    <span class="n">shim_stats</span> <span class="o">=</span> <span class="n">subject_stats</span><span class="p">[</span><span class="n">subject_stats</span><span class="p">[</span><span class="s1">&#39;Shim_Mode&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">shim_mode</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">shim_stats</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="n">mean_val</span> <span class="o">=</span> <span class="n">shim_stats</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;Average&#39;</span><span class="p">]</span>
+        <span class="n">std_val</span> <span class="o">=</span> <span class="n">shim_stats</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;Standard_Deviation&#39;</span><span class="p">]</span>
+        <span class="n">cv</span> <span class="o">=</span> <span class="n">std_val</span> <span class="o">/</span> <span class="n">mean_val</span> <span class="o">*</span> <span class="mi">100</span>  <span class="c1"># Coefficient of variation in percentage</span>
+        <span class="n">annotation_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">mean_val</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> nT/V</span><span class="se">\n</span><span class="si">{</span><span class="n">cv</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%&quot;</span>
+        <span class="n">splot</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">annotation_text</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">),</span> <span class="n">xycoords</span><span class="o">=</span><span class="s1">&#39;axes fraction&#39;</span><span class="p">,</span> 
+                       <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> 
+                       <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">wspace</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">hspace</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+
+<span class="c1"># Colorbar</span>
+<span class="c1"># Assume that the colorbar should start at the bottom of the lower row of subplots and</span>
+<span class="c1"># extend to the top of the upper row of subplots</span>
+<span class="n">cbar_bottom</span> <span class="o">=</span> <span class="mf">0.06</span>  <span class="c1"># This might need adjustment</span>
+<span class="n">cbar_height</span> <span class="o">=</span> <span class="mf">0.83</span>  <span class="c1"># This represents the total height of both rows of subplots</span>
+<span class="n">cbar_ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">0.93</span><span class="p">,</span> <span class="n">cbar_bottom</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">,</span> <span class="n">cbar_height</span><span class="p">])</span>
+<span class="n">cbar</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">cax</span><span class="o">=</span><span class="n">cbar_ax</span><span class="p">)</span>
+
+<span class="c1"># cbar_ax = fig.add_axes([0.95, 0.5, 0.04, 0.4])</span>
+<span class="c1"># cbar = plt.colorbar(im, cax=cbar_ax)</span>
+<span class="n">cbar_ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;nT/V&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_results</span><span class="p">,</span> <span class="s1">&#39;fig_b1plus_map.png&#39;</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;png&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;function matplotlib.pyplot.show(close=None, block=None)&gt;
+</pre></div>
+</div>
+<img alt="_images/index_44_1.png" src="_images/index_44_1.png" />
+</div>
+</div>
+</div>
 <div class="tex2jax_ignore mathjax_ignore section" id="references">
 <h1>References<a class="headerlink" href="#references" title="Permalink to this headline">#</a></h1>
-<div class="docutils container" id="id3">
+<div class="docutils container" id="id2">
 <dl class="citation">
-<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
 <dd><p>Alexandre D'Astous, Gaspard Cereza, Daniel Papp, Kyle M. Gilbert, Jason P. Stockmann, Eva Alonso-Ortiz, and Julien Cohen-Adad. Shimming toolbox: an open-source software toolbox for b0 and b1 shimming in mri. <em>Magnetic Resonance in Medicine</em>, 89(4):1401–1417, 2023. URL: <a class="reference external" href="https://onlinelibrary.wiley.com/doi/abs/10.1002/mrm.29528">https://onlinelibrary.wiley.com/doi/abs/10.1002/mrm.29528</a>, <a class="reference external" href="https://arxiv.org/abs/https://onlinelibrary.wiley.com/doi/pdf/10.1002/mrm.29528">arXiv:https://onlinelibrary.wiley.com/doi/pdf/10.1002/mrm.29528</a>, <a class="reference external" href="https://doi.org/https://doi.org/10.1002/mrm.29528">doi:https://doi.org/10.1002/mrm.29528</a>.</p>
 </dd>
 </dl>
