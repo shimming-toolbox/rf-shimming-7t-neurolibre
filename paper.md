@@ -31,13 +31,13 @@ authors:
     affiliation: 5
   - name: Robert L. Barry
     orcid: 
-    affiliation: 6
+    affiliation: "6, 7, 8"
   - name: Eva Alonso Ortiz
     orcid: 
     affiliation: 1
   - name: Julien Cohen-Adad
     orcid: 0000-0003-3662-9532
-    affiliation: "1, 7, 8"
+    affiliation: "1, 9, 10"
 affiliations:
  - name: NeuroPoly Lab, Institute of Biomedical Engineering, Polytechnique Montreal, Montreal, QC, Canada
    index: 1
@@ -51,12 +51,16 @@ affiliations:
    index: 5
  - name: Athinoula A. Martinos Center for Biomedical Imaging, Department of Radiology, Massachusetts General Hospital, Charlestown, MA, USA
    index: 6
- - name: Mila - Quebec AI Institute, Montreal, QC, Canada
+ - name: Harvard Medical School, Boston, MA, USA
    index: 7
- - name: Functional Neuroimaging Unit, Centre de recherche de l'Institut universitaire de gériatrie de Montréal QC, Canada
+ - name: Harvard-Massachusetts Institute of Technology Health Sciences & Technology, Cambridge, MA, USA
    index: 8
+ - name: Mila - Quebec AI Institute, Montreal, QC, Canada
+   index: 9
+ - name: Functional Neuroimaging Unit, Centre de recherche de l'Institut universitaire de gériatrie de Montréal QC, Canada
+   index: 10
 
-date: 2 February 2024
+date: 9 February 2024
 bibliography: paper.bib
 
 ---
@@ -77,7 +81,7 @@ Advancing the development of 7T MRI for spinal cord imaging is crucial for the e
 
 # Figures
 
-![Overview of the RF shimming procedure.
+![Overview of the RF shimming procedure. The top panel shows the RF coil used for the experiments, alongside the Tx coil geometry and the electromagnetic simulation results (on Gustav model) yielding the CP mode used for this coil. The bottom panel shows the RF shimming procedure (with approximate duration). First, GRE and tfl_rfmap scans are acquired (4min30s). Second, these images are transferred via ethernet socket from the MRI console onto a separate laptop running Shimming Toolbox and SCT (<1s). Third, the spinal cord is automatically segmented to produce a mask that is resampled into the space of the individual coil magnitude and phase images of the tfl_rfmap scan (~5s). Fourth, the RF shim weights are calculated according to the defined constraints for each shim scenario (1min total)..
 \label{fig:overview}](featured.png)
 
 
