@@ -1,0 +1,384 @@
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/jupyter_cache/executors/utils.py", line 51, in single_nb_execution
+    executenb(
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nbclient/client.py", line 1204, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nbclient/util.py", line 84, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nbclient/util.py", line 62, in just_run
+    return loop.run_until_complete(coro)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/asyncio/base_events.py", line 616, in run_until_complete
+    return future.result()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nbclient/client.py", line 663, in async_execute
+    await self.async_execute_cell(
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nbclient/client.py", line 965, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nbclient/client.py", line 862, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+# PYTHON CODE
+# Module imports
+
+# Base python
+import os
+from os import path
+from pathlib import Path
+
+# Graphical
+
+import plotly.graph_objs as go
+from IPython.display import display, HTML
+from plotly import __version__
+from plotly.offline import init_notebook_mode, iplot, plot
+config={
+    'showLink': False,
+    'displayModeBar': False,
+    'toImageButtonOptions': {
+                'format': 'png', # one of png, svg, jpeg, webp
+                'filename': 'custom_image',
+                'height': 2500,
+                'width': 500,
+                'scale': 2 # Multiply title/legend/axis/canvas sizes by this factor
+            }
+    }
+
+init_notebook_mode(connected=True)
+
+from plotly.subplots import make_subplots
+import plotly.graph_objects as go
+
+import seaborn as sns
+
+# Set the color palette
+pal=sns.color_palette()
+
+# Imports
+import warnings
+warnings.filterwarnings("ignore")
+
+## Setup for plots
+fig = make_subplots(rows=5, cols=2, vertical_spacing = 0.025,
+                    subplot_titles=(
+    '<b>sub-01</b>',
+    '<b>sub-01</b>',
+    '<b>sub-02</b>',
+    '<b>sub-02</b>',
+    '<b>sub-03</b>',
+    '<b>sub-03</b>',
+    '<b>sub-04</b>',
+    '<b>sub-04</b>',
+    '<b>sub-05</b>',
+    '<b>sub-05</b>',))
+
+t2_datasets={}
+b1_datasets={}
+
+t2_data = []
+b1_data = []
+
+legend_bool = True
+for subject in subjects:
+    index = 0
+    t2_datasets[subject]={}
+    b1_datasets[subject]={}
+
+    for shim_mode in shim_modes:
+        t2_datasets[subject][shim_mode]={}
+        b1_datasets[subject][shim_mode]={}
+
+        t2_data=go.scatter.Line(
+            x=x_grid,
+            y=t2_data_plotly[subject][shim_mode][0],
+            name=shim_mode,
+            legendgroup=shim_mode,
+            line=dict(color='rgb'+str(pal[index]), width=3),
+            showlegend=False
+            )
+
+        b1_data=go.scatter.Line(
+            x=x_grid,
+            y=b1_data_plotly[subject][shim_mode],
+            name=shim_mode,
+            legendgroup=shim_mode,
+            line=dict(color='rgb'+str(pal[index]), width=3),
+            showlegend=legend_bool
+            )        
+
+        
+        t2_datasets[subject][shim_mode]=t2_data
+        b1_datasets[subject][shim_mode]=b1_data
+
+        index += 1
+    legend_bool=False
+    
+
+index = 1
+# For z-ordering   
+for subject in subjects:
+    for shim_mode in shim_modes:
+        fig.add_trace(
+            t2_datasets[subject][shim_mode],
+            row=index, col=1
+        )
+        fig.add_trace(
+            b1_datasets[subject][shim_mode],
+            row=index, col=2
+        )
+    index+=1
+
+
+index = 1
+for subject in subjects:
+    if index == 5:
+        x_title = '<b>Vertebral Levels</b>'
+        showticklabels=True
+    else:
+        x_title = None
+        showticklabels=False
+
+    fig.update_xaxes(
+        type="linear",
+        autorange=True,
+        title=x_title,
+        showgrid=True,
+        gridcolor='rgb(169,169,169)',
+        tickvals=label_positions,
+        ticktext=vertebral_levels,
+        showticklabels=showticklabels,
+        title_font_family="Times New Roman",
+        title_font_size = 20,
+        linecolor='black',
+        linewidth=2,
+        tickfont=dict(
+            family='Times New Roman',
+            size=16,
+        ),
+        row=index, col=1
+        )
+    if index == 1:
+        fig.update_yaxes(
+            type="linear",
+            title={
+                'text':'<b>CSF/Cord T<sub>2</sub><sup>*</sup>w signal ratio</b>',
+                'standoff':0
+                },
+            range=[1.05, 1.4],
+            showgrid=True,
+            gridcolor='rgb(169,169,169)',
+            title_font_family="Times New Roman",
+            title_font_size = 20,
+            linecolor='black',
+            linewidth=2,
+            tickfont=dict(
+                family='Times New Roman',
+                size=16,
+            ),
+            row=index, col=1
+            )
+    else:
+        fig.update_yaxes(
+            type="linear",
+            title={
+                'text':'<b>CSF/Cord T<sub>2</sub><sup>*</sup>w signal ratio</b>',
+                'standoff':0
+                },
+            showgrid=True,
+            gridcolor='rgb(169,169,169)',
+            title_font_family="Times New Roman",
+            title_font_size = 20,
+            linecolor='black',
+            linewidth=2,
+            tickfont=dict(
+                family='Times New Roman',
+                size=16,
+            ),
+            row=index, col=1
+            )
+
+    fig.update_xaxes(
+        type="linear",
+        autorange=True,
+        title=x_title,
+        showgrid=True,
+        gridcolor='rgb(169,169,169)',
+        tickvals=label_positions,
+        ticktext=vertebral_levels,
+        showticklabels=showticklabels,
+        title_font_family="Times New Roman",
+        title_font_size = 20,
+        linecolor='black',
+        linewidth=2,
+        tickfont=dict(
+            family='Times New Roman',
+            size=16,
+        ),
+        row=index, col=2
+        )
+    fig.update_yaxes(
+        type="linear",
+        title={
+            'text':'<b>B<sub>1</sub><sup>+</sup> efficiency [nT/V]</b>',
+            'standoff':0
+            },
+        showgrid=True,
+        gridcolor='rgb(169,169,169)',
+        title_font_family="Times New Roman",
+        title_font_size = 20,
+        linecolor='black',
+        linewidth=2,
+        tickfont=dict(
+            family='Times New Roman',
+            size=16,
+        ),
+        row=index, col=2
+        )
+
+    index+=1
+
+fig.update_layout(height=1800, width=900)
+fig.update_layout(legend=dict(
+    yanchor="top",
+    y=0.999,
+    xanchor="left",
+    x=0.01,
+    font=dict(
+        family='Times New Roman',
+        size=12
+    ),
+    bordercolor="Black",
+    borderwidth=1.5
+    ),
+    legend_tracegroupgap=0,
+    paper_bgcolor='rgb(255, 255, 255)',
+    plot_bgcolor='rgb(255, 255, 255)',
+
+)
+
+fig.update_annotations(font_size=22)
+
+#iplot(fig, filename = 'figure4a', config = config)
+plot(fig, filename = 'figure1.html', config = config)
+display(HTML('figure1.html'))
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mValueError[0m                                Traceback (most recent call last)
+Cell [0;32mIn[20], line 71[0m
+[1;32m     68[0m t2_datasets[subject][shim_mode][38;5;241m=[39m{}
+[1;32m     69[0m b1_datasets[subject][shim_mode][38;5;241m=[39m{}
+[0;32m---> 71[0m t2_data[38;5;241m=[39m[43mgo[49m[38;5;241;43m.[39;49m[43mscatter[49m[38;5;241;43m.[39;49m[43mLine[49m[43m([49m
+[1;32m     72[0m [43m    [49m[43mx[49m[38;5;241;43m=[39;49m[43mx_grid[49m[43m,[49m
+[1;32m     73[0m [43m    [49m[43my[49m[38;5;241;43m=[39;49m[43mt2_data_plotly[49m[43m[[49m[43msubject[49m[43m][49m[43m[[49m[43mshim_mode[49m[43m][49m[43m[[49m[38;5;241;43m0[39;49m[43m][49m[43m,[49m
+[1;32m     74[0m [43m    [49m[43mname[49m[38;5;241;43m=[39;49m[43mshim_mode[49m[43m,[49m
+[1;32m     75[0m [43m    [49m[43mlegendgroup[49m[38;5;241;43m=[39;49m[43mshim_mode[49m[43m,[49m
+[1;32m     76[0m [43m    [49m[43mline[49m[38;5;241;43m=[39;49m[38;5;28;43mdict[39;49m[43m([49m[43mcolor[49m[38;5;241;43m=[39;49m[38;5;124;43m'[39;49m[38;5;124;43mrgb[39;49m[38;5;124;43m'[39;49m[38;5;241;43m+[39;49m[38;5;28;43mstr[39;49m[43m([49m[43mpal[49m[43m[[49m[43mindex[49m[43m][49m[43m)[49m[43m,[49m[43m [49m[43mwidth[49m[38;5;241;43m=[39;49m[38;5;241;43m3[39;49m[43m)[49m[43m,[49m
+[1;32m     77[0m [43m    [49m[43mshowlegend[49m[38;5;241;43m=[39;49m[38;5;28;43;01mFalse[39;49;00m
+[1;32m     78[0m [43m    [49m[43m)[49m
+[1;32m     80[0m b1_data[38;5;241m=[39mgo[38;5;241m.[39mscatter[38;5;241m.[39mLine(
+[1;32m     81[0m     x[38;5;241m=[39mx_grid,
+[1;32m     82[0m     y[38;5;241m=[39mb1_data_plotly[subject][shim_mode],
+[0;32m   (...)[0m
+[1;32m     86[0m     showlegend[38;5;241m=[39mlegend_bool
+[1;32m     87[0m     )        
+[1;32m     90[0m t2_datasets[subject][shim_mode][38;5;241m=[39mt2_data
+
+File [0;32m/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/plotly/graph_objs/scatter/_line.py:398[0m, in [0;36mLine.__init__[0;34m(self, arg, backoff, backoffsrc, color, dash, shape, simplify, smoothing, width, **kwargs)[0m
+[1;32m    394[0m     [38;5;28mself[39m[[38;5;124m"[39m[38;5;124mwidth[39m[38;5;124m"[39m] [38;5;241m=[39m _v
+[1;32m    396[0m [38;5;66;03m# Process unknown kwargs[39;00m
+[1;32m    397[0m [38;5;66;03m# ----------------------[39;00m
+[0;32m--> 398[0m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_process_kwargs[49m[43m([49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[38;5;28;43mdict[39;49m[43m([49m[43marg[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m)[49m[43m)[49m
+[1;32m    400[0m [38;5;66;03m# Reset skip_invalid[39;00m
+[1;32m    401[0m [38;5;66;03m# ------------------[39;00m
+[1;32m    402[0m [38;5;28mself[39m[38;5;241m.[39m_skip_invalid [38;5;241m=[39m [38;5;28;01mFalse[39;00m
+
+File [0;32m/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/plotly/basedatatypes.py:4392[0m, in [0;36mBasePlotlyType._process_kwargs[0;34m(self, **kwargs)[0m
+[1;32m   4390[0m     [38;5;28mself[39m[k] [38;5;241m=[39m v
+[1;32m   4391[0m [38;5;28;01melif[39;00m [38;5;129;01mnot[39;00m [38;5;28mself[39m[38;5;241m.[39m_skip_invalid:
+[0;32m-> 4392[0m     [38;5;28;01mraise[39;00m err
+
+[0;31mValueError[0m: Invalid property specified for object of type plotly.graph_objs.scatter.Line: 'x'
+
+Did you mean "dash"?
+
+    Valid properties:
+        backoff
+            Sets the line back off from the end point of the nth
+            line segment (in px). This option is useful e.g. to
+            avoid overlap with arrowhead markers. With "auto" the
+            lines would trim before markers if `marker.angleref` is
+            set to "previous".
+        backoffsrc
+            Sets the source reference on Chart Studio Cloud for
+            `backoff`.
+        color
+            Sets the line color.
+        dash
+            Sets the dash style of lines. Set to a dash type string
+            ("solid", "dot", "dash", "longdash", "dashdot", or
+            "longdashdot") or a dash length list in px (eg
+            "5px,10px,2px,2px").
+        shape
+            Determines the line shape. With "spline" the lines are
+            drawn using spline interpolation. The other available
+            values correspond to step-wise line shapes.
+        simplify
+            Simplifies lines by removing nearly-collinear points.
+            When transitioning lines, it may be desirable to
+            disable this so that the number of points along the
+            resulting SVG path is unaffected.
+        smoothing
+            Has an effect only if `shape` is set to "spline" Sets
+            the amount of smoothing. 0 corresponds to no smoothing
+            (equivalent to a "linear" shape).
+        width
+            Sets the line width (in px).
+        
+Did you mean "dash"?
+
+Bad property path:
+x
+^
+ValueError: Invalid property specified for object of type plotly.graph_objs.scatter.Line: 'x'
+
+Did you mean "dash"?
+
+    Valid properties:
+        backoff
+            Sets the line back off from the end point of the nth
+            line segment (in px). This option is useful e.g. to
+            avoid overlap with arrowhead markers. With "auto" the
+            lines would trim before markers if `marker.angleref` is
+            set to "previous".
+        backoffsrc
+            Sets the source reference on Chart Studio Cloud for
+            `backoff`.
+        color
+            Sets the line color.
+        dash
+            Sets the dash style of lines. Set to a dash type string
+            ("solid", "dot", "dash", "longdash", "dashdot", or
+            "longdashdot") or a dash length list in px (eg
+            "5px,10px,2px,2px").
+        shape
+            Determines the line shape. With "spline" the lines are
+            drawn using spline interpolation. The other available
+            values correspond to step-wise line shapes.
+        simplify
+            Simplifies lines by removing nearly-collinear points.
+            When transitioning lines, it may be desirable to
+            disable this so that the number of points along the
+            resulting SVG path is unaffected.
+        smoothing
+            Has an effect only if `shape` is set to "spline" Sets
+            the amount of smoothing. 0 corresponds to no smoothing
+            (equivalent to a "linear" shape).
+        width
+            Sets the line width (in px).
+        
+Did you mean "dash"?
+
+Bad property path:
+x
+^
+
